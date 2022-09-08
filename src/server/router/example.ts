@@ -11,7 +11,7 @@ export const exampleRouter = createRouter()
     input: z.object({
       id: z.string().uuid().optional(),
       name: z.string().min(1).max(32),
-      email: z.string().min(1),
+      email: z.string().email(),
     }),
     async resolve({ input }) {
       const post = await prisma?.user.create({
