@@ -6,16 +6,16 @@ export default function Landing() {
   if (session) {
     return (
       <>
-      <div className="min-h-full">
-        <button onClick={() => signOut()}>Sign out</button>
-      </div>
-      <Home></Home>
+        <div className="align-middle justify-center">
+          <button onClick={() => signOut()}>Sign out</button>
+        </div>
+        <Home></Home>
       </>
     );
   }
   return (
-    <div>
-      Click to sign into your user account <br />
+    <div className="flex justify-center items-center flex-col h-full">
+        Click to sign into your user account
       <button onClick={() => signIn("google")}>Sign in</button>
     </div>
   );
