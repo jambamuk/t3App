@@ -1,5 +1,5 @@
 import { useSession, signIn, signOut } from "next-auth/react"
-import AdviserHome from "./adviser-home";
+import Home from "./home";
 
 export default function Landing() {
   const { data: session } = useSession();
@@ -9,7 +9,7 @@ export default function Landing() {
       <div className="min-h-full">
         <button onClick={() => signOut()}>Sign out</button>
       </div>
-      <AdviserHome></AdviserHome>
+      <Home></Home>
       </>
     );
   }
