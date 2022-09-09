@@ -1,5 +1,6 @@
 import { createRouter } from "./context";
 import { z } from "zod";
+import { TRPCError } from "@trpc/server";
 
 export const exampleRouter = createRouter()
   .query('getUsers', {
@@ -29,6 +30,12 @@ export const exampleRouter = createRouter()
       const post = await prisma?.user.delete({
         where: { id }
       });
+      if(!post){
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: 'User does not exist'
+        })
+      }
       return post;
     },
   })
