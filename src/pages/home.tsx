@@ -2,25 +2,25 @@ import { trpc } from "../utils/trpc";
 import Head from 'next/head'
 
 export default function Home() {
-  const users = trpc.useQuery(["example.getUsers"]);
+  const users = trpc.useQuery(["noAuthUser.getUsers"]);
   const utils = trpc.useContext()
 
-  const testMutation = trpc.useQuery(["question.getSecretMessage"])
-  const deleteMutation = trpc.useMutation(["example.delete"], {
+  const deleteMutation = trpc.useMutation(["users.delete"], {
     async onSuccess() {
       // refetches posts after a post is added
-      await utils.invalidateQueries(["example.getUsers"]);
+      await utils.invalidateQueries(["noAuthUser.getUsers"]);
     },
   });
 
-  const addUserMutation = trpc.useMutation(["example.add"], {
+  const addUserMutation = trpc.useMutation(["noAuthUser.add"], {
     async onSuccess() {
       // refetches posts after a post is added
-      await utils.invalidateQueries(["example.getUsers"]);
+      await utils.invalidateQueries(["noAuthUser.getUsers"]);
     },
-    async onError(error){
-      console.log(error)
-    }
+    onError(error) {
+      console.log(error.data)
+      console.log(error.data?.code)
+    } 
     });
 
   function deleteUser(id: string) {
@@ -48,10 +48,11 @@ export default function Home() {
         <title>t3 app</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      {testMutation.data}
 
+      {addUserMutation.error?.message}
       {users.data?.map((user) => (
         <div key={user.id} onClick={() => deleteUser(user.id)} className="hover:bg-red-300">
+          <hr />
           <h3 >Name: {user.name}</h3>
           <p >Email: {user.email}</p>
           <hr />

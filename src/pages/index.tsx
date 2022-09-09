@@ -1,13 +1,16 @@
 import { useSession, signIn, signOut } from "next-auth/react"
+import AdviserHome from "./adviser-home";
 
-export default function Home() {
+export default function Landing() {
   const { data: session } = useSession();
   if (session) {
     return (
-      <div >
-        Welcome user<br />
+      <>
+      <div className="min-h-full">
         <button onClick={() => signOut()}>Sign out</button>
       </div>
+      <AdviserHome></AdviserHome>
+      </>
     );
   }
   return (

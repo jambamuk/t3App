@@ -1,13 +1,8 @@
-import { createRouter } from "./context";
-import { z } from "zod";
 import { TRPCError } from "@trpc/server";
+import { z } from "zod";
+import { createProtectedRouter } from "./protected-router";
 
-export const exampleRouter = createRouter()
-  .query('getUsers', {
-    async resolve({ ctx }) {
-      return await prisma?.user.findMany()
-    }
-  })
+export const usersRouter = createProtectedRouter()
     .mutation('add', {
     input: z.object({
       id: z.string().uuid().optional(),
