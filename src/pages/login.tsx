@@ -1,7 +1,8 @@
 import { trpc } from "../utils/trpc";
 import Head from 'next/head'
+import Link from "next/link";
 
-export default function Home() {
+export default function Login() {
   const users = trpc.useQuery(["noAuthUser.getUsers"]);
   const utils = trpc.useContext()
 
@@ -49,6 +50,9 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
+      <Link href="adviser-home" className="bg">
+        <a>go to adviser</a>
+      </Link>
       {addUserMutation.error?.message}
       {users.data?.map((user) => (
         <div key={user.id} onClick={() => deleteUser(user.id)} className="hover:bg-red-300">

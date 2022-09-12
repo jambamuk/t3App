@@ -1,22 +1,46 @@
 import { useSession, signIn, signOut } from "next-auth/react"
-import Home from "./home";
+import Image from "next/image";
+import Link from "next/link";
+import Login from "./login";
 
 export default function Landing() {
   const { data: session } = useSession();
+  console.log(session?.user?.image)
   if (session) {
     return (
       <>
-        <div className="align-middle justify-center">
-          <button onClick={() => signOut()}>Sign out</button>
-        </div>
-        <Home></Home>
+          <div className="flex w-full justify-evenly">
+            <div className="flex">
+              < Link href="/" >
+                <a>
+                  <Image
+                    src="/home-button.svg"
+                    width={20}
+                    height={20}
+                    alt="home button" />
+                </a>
+              </Link >
+            </div>
+
+            <div className="flex">
+              <Image
+                src={session.user?.image} 
+                alt="Picture of the author"
+                width={20}
+                height={20}
+              />
+              <button onClick={() => signOut()}>Sign out</button>
+            </div>
+          </div>
+          <Login></Login>
       </>
     );
   }
   return (
-    <div className="flex justify-center items-center flex-col h-full">
-        Click to sign into your user account
-      <button onClick={() => signIn("google")}>Sign in</button>
-    </div>
+    <>
+        <button onClick={() => signIn("google")} type="button" className="login-with-google-btn" >
+          Sign in with Google
+        </button>
+    </>
   );
 }

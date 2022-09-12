@@ -14,8 +14,10 @@ datasource db {
     url      = env("DATABASE_URL")
 }
 
-model Example {
+model Pokemon {
     id String @id @default(cuid())
+    name    String
+    sprite  String
 }
 
 // Necessary for Next auth
