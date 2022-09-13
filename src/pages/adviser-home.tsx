@@ -11,11 +11,10 @@ export default function AdviserHome() {
   }, [])
 
   function addPokemon() {
-
     const api = new PokemonClient();
     setLoading(true)
     api
-      .getPokemonById(Math.round(Math.random() * 10 + 1))
+      .getPokemonById(getRandomPokemon())
       .then((p) => {
         console.log(p)
         if (p) {
@@ -30,11 +29,11 @@ export default function AdviserHome() {
   return (
     <div>
       <button onClick={addPokemon}>Add</button>
-      {data &&
+      {data && 
         data.map((p) => (
-          <div>
+          <div key={p.id}>
             <Image
-              src={p.sprites.front_default}
+              src={p.sprites.front_default as string}
               alt={p.name}
               width={100}
               height={100}
@@ -44,4 +43,15 @@ export default function AdviserHome() {
       }
     </div>
   );
+};
+
+const MAX_DEX_ID = 493;
+
+export const getRandomPokemon: (notThisOne?: number) => number = (
+  notThisOne
+) => {
+  const pokedexNumber = Math.floor(Math.random() * MAX_DEX_ID) + 1;
+
+  if (pokedexNumber !== notThisOne) return pokedexNumber;
+  return getRandomPokemon(notThisOne);
 };
