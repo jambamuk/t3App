@@ -8,7 +8,7 @@ export default function AdviserHome() {
 
   useEffect(() => {
     addPokemon()
-  })
+  }, [])
 
   function addPokemon() {
     const api = new PokemonClient();
@@ -29,15 +29,16 @@ export default function AdviserHome() {
   return (
     <div>
       <button onClick={addPokemon}>Add</button>
-      {data && 
+      {data &&
         data.map((p) => (
           <div key={p.id}>
-            <Image
-              src={p.sprites.front_default as string}
-              alt={p.name}
-              width={100}
-              height={100}
-            />
+              <Image
+                src={p.sprites.front_default as string}
+                alt={p.name}
+                width={100}
+                height={100}
+              />
+              <h1>{p.name}</h1>
           </div>
         ))
       }

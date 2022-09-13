@@ -50,8 +50,8 @@ export default function Login() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <Link href="adviser-home" className="bg">
-        <a>go to adviser</a>
+      <Link href="Pokemon" className="bg">
+        <a>Pokemon!</a>
       </Link>
       {addUserMutation.error?.message}
       {users.data?.map((user) => (
