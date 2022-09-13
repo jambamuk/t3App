@@ -2,7 +2,7 @@ import { PokemonClient } from 'pokenode-ts'
 import Image from 'next/image';
 import { trpc } from '../utils/trpc';
 
-export default function AdviserHome() {
+export default function Pokemon() {
   const pokemons = trpc.useQuery(["pokemon.getPokemon"]);
   const utils = trpc.useContext()
   const addPokemonMutation = trpc.useMutation(["pokemon.addPokemon"], {
