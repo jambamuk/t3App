@@ -8,7 +8,7 @@ export default function AdviserHome() {
 
   useEffect(() => {
     addPokemon()
-  }, [])
+  })
 
   function addPokemon() {
     const api = new PokemonClient();
@@ -43,7 +43,7 @@ export default function AdviserHome() {
       }
     </div>
   );
-};
+}
 
 const MAX_DEX_ID = 493;
 
