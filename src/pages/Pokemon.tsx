@@ -1,46 +1,57 @@
-import { PokemonClient } from 'pokenode-ts'
-import Image from 'next/image';
-import { trpc } from '../utils/trpc';
+import { Pokemon, PokemonClient } from "pokenode-ts"
+import { useEffect, useState } from "react"
+import Image from "next/image"
 
-export default function Pokemon() {
-  const pokemons = trpc.useQuery(["pokemon.getPokemon"]);
-  const utils = trpc.useContext()
-  const addPokemonMutation = trpc.useMutation(["pokemon.addPokemon"], {
-    async onSuccess() {
-      // refetches posts after a post is added
-      await utils.invalidateQueries(["pokemon.getPokemon"]);
-    },
-    onError(error) {
-      console.log(error.data)
-      console.log(error.data?.code)
-    }
-  });
+export default function AdviserHome() {
+  const [data, setData] = useState<Pokemon[]>([])
+  const [isLoading, setLoading] = useState(false)
 
-  async function addRandomPokemon() {
-    console.log(pokemons)
+  useEffect(() => {
+    addPokemon()
+  })
+
+  function addPokemon() {
     const api = new PokemonClient();
-    await api
-      .getPokemonById(Math.round(Math.random()*10 + 1))
+    setLoading(true)
+    api
+      .getPokemonById(getRandomPokemon())
       .then((p) => {
-        console.log(p.sprites.front_default)
-        addPokemonMutation.mutateAsync({
-          name: p.name,
-          sprite: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/405.png',
-        })
+        console.log(p)
+        if (p) {
+          setData([...data, p])
+          setLoading(false)
+        }
       })
-      .catch((error) => console.error(error));
   }
+  if (isLoading) return <p>Loading...</p>
+  if (!data) return <p>No profile data</p>
 
   return (
     <div>
-    <h1>POKEMON</h1>
-    {pokemons.data?.map((pokemon)=>{
-      <p>{pokemon.name}</p>
-    })}
-      {pokemons.data?.map((pokemon) => {
-        <Image key={pokemon.name} src={pokemon.sprite} alt="pokemon"></Image>
-      })}
-      <button onClick={addRandomPokemon} className=''>get pokemon</button>
+      <button onClick={addPokemon}>Add</button>
+      {data && 
+        data.map((p) => (
+          <div key={p.id}>
+            <Image
+              src={p.sprites.front_default as string}
+              alt={p.name}
+              width={100}
+              height={100}
+            />
+          </div>
+        ))
+      }
     </div>
-  )
+  );
 }
+
+const MAX_DEX_ID = 493;
+
+export const getRandomPokemon: (notThisOne?: number) => number = (
+  notThisOne
+) => {
+  const pokedexNumber = Math.floor(Math.random() * MAX_DEX_ID) + 1;
+
+  if (pokedexNumber !== notThisOne) return pokedexNumber;
+  return getRandomPokemon(notThisOne);
+};
