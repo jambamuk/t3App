@@ -7,6 +7,7 @@ export default function AdviserHome() {
   const [isLoading, setLoading] = useState(false)
 
   useEffect(() => {
+    // move to back ?
     addPokemon()
   }, [])
 
